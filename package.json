@@ -1,0 +1,34 @@
+{
+  "name": "share",
+  "version": "0.0.1",
+  "description": "share for javascript",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ifir/share.git"
+  },
+  "keywords": [
+    "share",
+    "js",
+    "share.js",
+    "native",
+    "javascript"
+  ],
+  "author": "ifir",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ifir/share/issues"
+  },
+  "homepage": "https://github.com/ifir/share#readme",
+  "devDependencies": {
+    "css-loader": "^0.26.2",
+    "less": "^2.7.2",
+    "less-loader": "^2.2.3",
+    "style-loader": "^0.13.2",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.2.1"
+  }
+}
