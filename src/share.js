@@ -30,11 +30,205 @@
 				isQQBrowser: that.getPlantform('MQQBrowser'),
 				isWeixin: that.getPlantform('MicroMessenger'),
 				qqBrowserVersion: this.isQQBrowser ? getVersion('MQQBrowser/') : 0,
-				ucBrowserVersion: this.isUCBrowser ? getVersion('UCBrowser/') : 0
+				ucBrowserVersion: this.isUCBrowser ? getVersion('UCBrowser/') : 0,
+				//是否支持浏览器原生分享
+				supportNativeShare: ( (this.isIOS && this.ucBrowserVersion >= 10.2) || (this.isAndroid && this.ucBrowserVersion >= 9.7) || (this.qqBrowserVersion >= 5.4) ) ? true : false,
+				// 支持浏览器原生分享的APP
+				// [IOS下UC, Android下UC, QQ浏览器]
+				nativeShareApps: {
+					weixin: ['kWeixin', 'WechatFriends', 1],
+					weixintimeline: ['kWeixinFriend', 'WechatTimeline', 8],
+					weibo: ['kSinaWeibo', 'SinaWeibo', 11],
+					qq: ['kQQ', 'QQ', 4],
+					qzone: ['kQZone', 'Qzone', 3]
+				}
 			};
 			return obj;
 		}
 	};
+
+	/**
+	 * [share description]
+	 * @param  {String} selector DOM标识
+	 * @param  {Object} config   分享标识
+	 */
+	function share(selector, config) {
+		if(typeof selector !== 'string'){
+			console.error('You msut write selector(eg:"#div"or".div span"...)!');
+			return;
+		}
+		if(typeof config === 'undefined'){
+			console.error('You msut write config!');
+			return;
+		}
+		var ele = document.querySelectorAll(selector);
+		var deviceObj = plantform.device();
+		config.from = window.location.host;
+		console.log(config);
+		console.log(deviceObj);
+		console.log(share.base64);
+		//share.to(deviceObj, 'weixin');
+		share.render(ele);
+		share.initEvent(deviceObj, selector, function(deviceObj, site, config){
+			share.to(deviceObj, site, config);
+		});
+		// 普通浏览器没有webapi的分享是通过QQ浏览器当桥梁进行的，
+  		// 需要通过URL参数判断分享到哪个地方
+		// var site = share.getQuery('bridge');
+		// if (site && typeof history.replaceState === 'function') {
+		// 	var url = window.location.href.replace(new RegExp('[&?]bridge='+site, 'gi'), '');
+		// 	history.replaceState(null, document.title, url);
+		// 	share.to(deviceObj, site, config);
+		// }
+	}
+	//分享到
+	share.to = function(deviceObj, site, data){
+		var app, config, api = share.base64[site].api;
+		//在UC和QQ浏览器支持原生分享
+		if(deviceObj.supportNativeShare){
+			//UC
+			if(deviceObj.isUCBrowser){
+				if(deviceObj.nativeShareApps[site]) {
+		        	app = device.isIOS ? nativeShareApps[site][0] : nativeShareApps[site][1];
+				}
+				if(app !== undefined){
+					config = [data.title, data.disc, data.url, app, '', '@'+data.from, ''];
+					// android
+			        if (window.ucweb) {
+			          ucweb.startRequest && ucweb.startRequest('shell.page_share', config);
+			        }
+			        // ios
+			        if (window.ucbrowser) {
+			          ucbrowser.web_share && ucbrowser.web_share.apply(null, config);
+			        }
+			        return;
+				}
+			}
+			//QQ浏览器
+			if(deviceObj.isQQBrowser){
+				alert('qq')
+				deviceObj.nativeShareApps[site] && (app = nativeShareApps[site][2]);
+				if(app !== undefined) {
+			        if (window.browser) {
+						config = {
+							url: data.url,
+							title: data.title,
+							description: data.disc,
+							img_url: data.pic,
+							img_title: data.title,
+							to_app: app,
+							cus_txt: ''
+						};
+
+						browser.app && browser.app.share(shareInfo);
+			        } else {
+						share.loadScript('//jsapi.qq.com/get?api=app.share', function() {
+							share.to(deviceObj, site, data);
+						});
+			        }
+			        return;
+			      }
+			}
+		}
+		// 在普通浏览器里，使用URL Scheme唤起QQ客户端进行分享
+		if(site === 'qzone' || site === 'qq') {
+			var scheme = share.setQuery(sitesObj[site].scheme, {
+				share_id: '1101685683',
+				url: data.url,
+				title: data.title,
+				description: data.disc,
+				previewimageUrl: data.pic, //For IOS
+				image_url: data.pic //For Android
+			});
+			share.urlScheme(deviceObj, scheme);
+			return;
+		}
+		// 在普通浏览器里点击微信分享，通过QQ浏览器当桥梁唤起微信客户端
+		// 如果没有安装QQ浏览器则点击无反应
+		if(site.indexOf('weixin') !== -1) {
+			var mttbrowserURL = share.setQuery(window.location.href, {bridge: site});
+			share.urlScheme(deviceObj, 'mttbrowser://url=' + mttbrowserURL);
+		}
+
+		// 在微信里点微信分享，弹出右上角提示
+		if(deviceObj.isWeixin && (site.indexOf('weixin') !== -1)) {
+			alert('请点击右上角');
+			return;
+		}
+
+		// 对于没有原生分享的网站，使用webapi进行分享
+		if(api) {
+			for(var k in data) {
+				api = api.replace(new RegExp('{{' + k + '}}', 'g'), encodeURIComponent(data[k]));
+			}
+			window.open(api, '_blank');
+		}
+	}
+	//通过URL Scheme 打开APP
+	share.urlScheme = function(deviceObj, scheme){
+			console.log(deviceObj)
+		if (deviceObj.isIOS) {
+			//IOS
+			window.location.href = scheme;
+		} else {
+			//Andorid
+			var iframe = document.createElement('iframe');
+			iframe.style.display = 'none';
+			iframe.src = scheme;
+			document.body.appendChild(iframe);
+			window.setTimeout(function() {
+				iframe && iframe.parentNode && iframe.parentNode.removeChild(iframe);
+			}, 2000);
+		}
+	}
+	//渲染DOM
+	share.render = function(ele){
+		ele[0].innerHTML = '<button data-site="weixin">分享</button>';
+	}
+	//初始化事件
+	share.initEvent = function(deviceObj, selector, cb){
+		var icons = document.querySelectorAll(selector + ' button[data-site]');
+		for(var i = 0, len = icons.length; i < len; i++){
+			icons[i].addEventListener('click', function(){
+				var site = this.getAttribute('data-site');
+				console.log(site)
+				cb && cb(deviceObj, site);
+			});
+		}
+	}
+	//设置url
+	share.setQuery = function(url, config){
+		var arr = [];
+		for(var k in config) {
+			arr.push(k + '=' + config[k]);
+		}
+		return url + (url.indexOf('?') !== -1 ? '&' : '?') + arr.join('&');
+	}
+	//获取url  bridge参数实现间接跳转
+	share.getQuery = function(){
+		var query = window.location.search.substring(1);
+		var arrParams = query.split('&');
+		var length = arrParams.length;
+		for (var i = 0; i < length; i++) {
+			var pair = arrParams[i].split('=');
+			if (decodeURIComponent(pair[0]) === 'bridge') {
+				return decodeURIComponent(pair[1]);
+			}
+		}
+	}
+	//加载脚本
+	share.loadScript = function(url, cb){
+		var script = doc.createElement('script');
+		script.src = url;
+		script.onload = onreadystatechange = function() {
+			if (!this.readyState || this.readyState === 'load' || this.readyState === 'complete') {
+				cb && cb();
+				script.onload = onreadystatechange;
+				script.parentNode.removeChild(script);
+			}
+		};
+		body.appendChild(script);
+	}
 	//图片base64
 	share.base64 = {
 		weixin: {
@@ -77,32 +271,15 @@
 		    api: 'http://tieba.baidu.com/f/commit/share/openShareApi?url={{url}}&title={{title}}&desc={{desc}}'
 		}
 	}
-		//初始化style
+	//初始化style
 	share.initStyle = function() {
 		console.log('initStyle');
 	}
 
-	/**
-	 * [share description]
-	 * @param  {String} selector DOM标识
-	 * @param  {Object} config   分享标识
-	 */
-	function share(selector, config) {
-		if (typeof selector !== 'string') {
-			console.error('You msut write selector(eg:"#div"or".div span"...)!');
-			return;
-		}
-		if (typeof config === 'undefined') {
-			console.error('You msut write config!');
-			return;
-		}
-		var ele = document.querySelectorAll(selector);
-		var deviceObj = plantform.device();
-		console.log(config);
-		console.log(deviceObj);
-		console.log(share.base64);
-		share.initStyle();
-	}
+
+
+
+
 
 	return share;
 });
