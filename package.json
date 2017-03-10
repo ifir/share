@@ -24,11 +24,13 @@
   },
   "homepage": "https://github.com/ifir/share#readme",
   "devDependencies": {
-    "css-loader": "^0.26.2",
-    "less": "^2.7.2",
-    "less-loader": "^2.2.3",
-    "style-loader": "^0.13.2",
-    "url-loader": "^0.5.8",
-    "webpack": "^2.2.1"
+    "browser-sync": "^2.18.8",
+    "gulp": "^3.9.1",
+    "gulp-changed": "^2.0.0",
+    "gulp-clean": "^0.3.2",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.1.0",
+    "run-sequence": "^1.2.2",
   }
 }

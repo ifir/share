@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=0.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, minimal-ui" />
+	<title>分享</title>
+	<style type="text/css">
+		*{margin: 0;padding: 0;}
+	</style>
+</head>
+<body>
+	<h1>Hello World</h1>
+	<div class="share"></div>
+	<script type="text/javascript" src="./share.js"></script>
+	<script type="text/javascript">
+		share('.share', {
+			url: '网站url',
+			title: '分享标题',
+			desc: '分享内容',
+			pic: '分享图片',
+			sites:['weixin', 'weixintimeline', 'weibo', 'qq', 'qzone']
+		});
+	</script>
+</body>
+</html>
