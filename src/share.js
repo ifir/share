@@ -15,10 +15,11 @@
 		ua: navigator.userAgent.toLowerCase(),
 		getPlantform: function(deviceStr) {
 			var deviceStr = deviceStr.toLowerCase();
-			return plantform.ua.indexOf(deviceStr) !== -1;
+			var flag = (this.ua.indexOf(deviceStr) !== -1);
+			return flag;
 		},
 		getVersion: function(deviceStr) {
-			var arr = (ua.split(deviceStr.toLowerCase())[1]).split('.');
+			var arr = (this.ua.split(deviceStr.toLowerCase())[1]).split('.');
 			return parseFloat(arr[0] + '.' + arr[1]);
 		},
 		device: function() {
@@ -29,10 +30,6 @@
 				isUCBrowser: that.getPlantform('UCBrowser'),
 				isQQBrowser: that.getPlantform('MQQBrowser'),
 				isWeixin: that.getPlantform('MicroMessenger'),
-				qqBrowserVersion: this.isQQBrowser ? getVersion('MQQBrowser/') : 0,
-				ucBrowserVersion: this.isUCBrowser ? getVersion('UCBrowser/') : 0,
-				//是否支持浏览器原生分享
-				supportNativeShare: ( (this.isIOS && this.ucBrowserVersion >= 10.2) || (this.isAndroid && this.ucBrowserVersion >= 9.7) || (this.qqBrowserVersion >= 5.4) ) ? true : false,
 				// 支持浏览器原生分享的APP
 				// [IOS下UC, Android下UC, QQ浏览器]
 				nativeShareApps: {
@@ -43,6 +40,10 @@
 					qzone: ['kQZone', 'Qzone', 3]
 				}
 			};
+			obj.qqBrowserVersion = obj.isQQBrowser ? that.getVersion('MQQBrowser/') : 0;
+			obj.ucBrowserVersion = obj.isUCBrowser ? that.getVersion('UCBrowser/') : 0;
+			//是否支持浏览器原生分享
+			obj.supportNativeShare = ( (obj.isIOS && obj.ucBrowserVersion >= 10.2) || (obj.isAndroid && obj.ucBrowserVersion >= 9.7) || (obj.qqBrowserVersion >= 5.4)) ? true : false;
 			return obj;
 		}
 	};
