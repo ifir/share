@@ -10,8 +10,8 @@
 </head>
 <body>
 	<h1>Hello World</h1>
-	<div class="share"></div>
-	<script type="text/javascript" src="./share.js"></script>
+	<div id="share" class="share">微信分享</div>
+	<!-- <script type="text/javascript" src="./share.js"></script>
 	<script type="text/javascript">
 		share('.share', {
 			url: '网站url',
@@ -20,6 +20,32 @@
 			pic: '分享图片',
 			sites:['weixin', 'weixintimeline', 'weibo', 'qq', 'qzone']
 		});
+	</script> -->
+	<!-- <script type="text/javascript" src="./test.js"></script>
+	<script type="text/javascript">
+	var config = {
+	        url:'http://www.baidu.com',// 分享的网页链接
+	        title:'分享标题',// 标题
+	        desc:'分享描述',// 描述
+	        img:'https://hbfile.b0.upaiyun.com/img/category_page/2e94335da287cfdfd7990bd88eb8ff37262e322492a5',// 图片
+	        img_title:'图片标题',// 图片标题
+	        from:'振霖' // 来源
+	    };
+		document.getElementById('share').addEventListener('click', function () {
+			share(config);
+		});
+	</script> -->
+	<script type="text/javascript" src="./share.alpha.js"></script>
+	<script type="text/javascript">
+	var config = {
+        url:'http://www.baidu.com',// 分享的网页链接
+        title:'分享标题',// 标题
+        desc:'分享描述',// 描述
+        img:'https://hbfile.b0.upaiyun.com/img/category_page/2e94335da287cfdfd7990bd88eb8ff37262e322492a5',// 图片
+        img_title:'图片标题',// 图片标题
+        from:'振霖' // 来源
+    };
+	var share = new Share('#share',config);
 	</script>
 </body>
 </html>
