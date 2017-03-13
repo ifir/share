@@ -15,28 +15,50 @@
 	}
 })(typeof window !== 'undefined' ? window : this, function(window, document){
 	'use strict';
-	function Share(selector, config, cb) {
+	function Share(selector, config) {
 		var _this = this;
-
+		_this.config = config;
 		_this.container = document.querySelectorAll(selector);
 		_this.UA = window.navigator.userAgent;
-		_this.appName = Share.getAppName();
+		_this.appName = '';
 
-		cb && cb();
 		_this.init();
 
 	}
-	//获取App名称
-	Share.getAppName = function(){
 
-	}
 	Share.prototype = {
 		constructor: Share,
 		//浏览器设备信息
 		browsersInfo:{
+			isIOS: false,
+			isAndroid: false,
 			isUCBrowser: false,
 			isQQBrowser: false,
-
+			isWeixin: false,
+			ucBrowserVersion: 0,
+			qqBrowserVersion: 0,
+			//当前浏览器下支持原生分享
+			supportNativeShare: false,
+			// 支持浏览器原生分享的APP
+			// [IOS下UC, Android下UC, QQ浏览器]
+			nativeShareApps: {
+				weixin: ['kWeixin', 'WechatFriends', 1],
+				weixintimeline: ['kWeixinFriend', 'WechatTimeline', 8],
+				weibo: ['kSinaWeibo', 'SinaWeibo', 11],
+				qq: ['kQQ', 'QQ', 4],
+				qzone: ['kQZone', 'Qzone', 3]
+			}
+		},
+		//初始化浏览器信息
+		initBrowsersInfo: function(){
+			var _this = this;
+			var info = _this.browsersInfo;
+			info.isIOS = _this.getPlantform('iPhone') || _this.getPlantform('iPad') || _this.getPlantform('iPod');
+			info.isAndroid = _this.getPlantform('Android');
+			info.isUCBrowser = _this.getPlantform('UCBrowser');
+			info.isQQBrowser = _this.getPlantform('MQQBrowser');
+			info.isUCBrowser && (info.ucBrowserVersion = _this.getVersion('UCBrowser/'));
+			info.isQQBrowser && (info.qqBrowserVersion = _this.getVersion('QQBrowser/'));
 		},
 		//初始化icon图标,api等
 		initAPI:{
@@ -83,37 +105,76 @@
 		//初始化
 		init: function(){
 			var _this = this;
+			_this.initBrowsersInfo();
 			_this.initStyle();
 			_this.initRender();
-			_this.initEvent();
+			_this.initEvent('weixin', _this.config);
 			window.console.log('init');
+			window.console.log(this.browsersInfo);
 		},
 		//获取设备信息Android & IOS
-		getPlantform: function(){
-
+		getPlantform: function(name){
+			var ua = this.UA.toLowerCase();
+			var name = name.toLowerCase();
+			var flag = ua.indexOf(name) > 0 ? true : false;
+			return flag;
 		},
 		//获取QQ浏览器和UC浏览器版本
-		getVersion: function(){
+		getVersion: function(name){
 
 		},
 		//分享到
-		shareTo: function(){
-
+		shareTo: function(app, config){
+			var _this = this;
+			var ah = {
+		        url: config.url,
+		        title: config.title,
+		        description: config.desc,
+		        img_url: config.img,
+		        img_title: config.img_title,
+		        to_app: 1,//微信好友1,腾讯微博2,QQ空间3,QQ好友4,生成二维码7,微信朋友圈8,啾啾分享9,复制网址10,分享到微博11,创意分享13
+		        cus_txt: "请输入此时此刻想要分享的内容"
+		    };
+		    if(typeof browser != "undefined") {
+		        if (typeof browser.app != "undefined") {
+		        	//alert(browser.app.share);
+		            browser.app.share(ah);
+		        }
+		    }else{
+		    	this.loadScript('//jsapi.qq.com/get?api=app.share', function(){
+		    		//browser.app.share(ah);s
+		    		_this.shareTo(app, config);
+		    	});
+		    }
 		},
 		//初始化事件
 		initRender: function(){
 
 		},
-		initEvent: function(){
-
+		initEvent: function(app, config){
+			var _this = this;
+			document.getElementById('share').addEventListener('click', function(){
+				_this.shareTo(app, config);
+			});
 		},
 		//初始化样式
 		initStyle: function(){
 
 		},
 		//加载script
-		loadScript: function(){
-			var script = document.createElement()
+		loadScript: function(url, cb){
+			var script = document.createElement('script');
+			var body = document.getElementsByTagName('body')[0];
+			script.src = url;
+			body.appendChild(script);
+			script.onload = script.onreadystatechange = function(){
+				if(!this.readyState || this.readyState === "loaded" || this.readyState === "complete" ){
+					//alert(1)
+					cb && cb();
+					// script.parentNode.removeChild(script);
+					// script.onload = script.onreadystatechange = null;
+				}
+			}
 		},
 		//实现url scheme 唤醒APP
 		urlScheme: function(){
