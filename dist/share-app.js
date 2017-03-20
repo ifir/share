@@ -1,17 +1,17 @@
 /**
- * Share
+ * ShareApp
  * @param {String} selector    父容器的id,class,tag等
  * @param {Object} config 分享配置
  */
 ;(function(global, factory) {
 	if (typeof define === 'function' && define.amd) {
 		define(function() {
-			return (global.Share = factory(global, global.document));
+			return (global.ShareApp = factory(global, global.document));
 		});
 	} else if (typeof exports === 'object') {
 		module.exports = factory(global, global.document);
 	} else {
-		global.Share = factory(global, global.document);
+		global.ShareApp = factory(global, global.document);
 	}
 })(typeof window !== 'undefined' ? window : this, function(window, document) {
 	'use strict';
@@ -74,7 +74,7 @@
 		}
 	};
 
-	function Share(selector, config) {
+	function ShareApp(selector, config) {
 		var _this = this;
 		_this.config = config;
 		_this.container = document.querySelectorAll(selector)[0];
@@ -85,8 +85,8 @@
 
 	}
 
-	Share.prototype = {
-		constructor: Share,
+	ShareApp.prototype = {
+		constructor: ShareApp,
 		//浏览器设备信息
 		browsersInfo: {
 			isIOS: false,
@@ -503,5 +503,5 @@
 
 
 
-	return Share;
+	return ShareApp;
 });
