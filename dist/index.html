@@ -6,55 +6,6 @@
 	<title>分享</title>
 	<style type="text/css">
 		*{margin: 0;padding: 0;}
-		.share-list{
-			width: 100%;
-			overflow: hidden;
-			font-size: 0;
-		}
-		.share-list .share-item{
-			display: inline-block;
-			width: 25%;
-			font-size: 14px;
-			margin-bottom: 16px;
-		}
-		.share-list .weixin{
-			background-color: #49b233;
-		}
-		.share-list .weixintimeline{
-			background-color: #1cb526;
-		}
-		.share-list .qq{
-			background-color: #4081e1;
-		}
-		.share-list .qzone{
-			background-color: #fdbe3d;
-		}
-		.share-list .weibo{
-			background-color: #f04e59;
-		}
-		.share-list .yixin{
-			background-color: #23cfaf;
-		}
-		.share-list .tqq{
-			background-color: #97cbe1;
-		}
-		.share-list .tieba{
-			background-color: #5b95f0;
-		}
-		.share-list .icon-wrap{
-			width: 50px;
-			height: 50px;
-			text-align: center;
-			vertical-align: middle;
-			margin: 0 auto;
-			border-radius: 50%;
-			line-height: 50px;
-		}
-		.share-item img{
-			width: 36px;
-			vertical-align: middle;
-			margin-top: -2px;
-		}
 	</style>
 </head>
 <body>
@@ -70,7 +21,15 @@
         img:'https://hbfile.b0.upaiyun.com/img/category_page/2e94335da287cfdfd7990bd88eb8ff37262e322492a5',// 图片
         img_title:'图片标题',// 图片标题
         from:'振霖', // 来源
-        apps:['weixin', 'weixintimeline', 'qq', 'qzone', 'weibo']
+        apps:['weixin', 'weixintimeline', 'qq', 'qzone', 'weibo'],
+        //微信config
+        WXconfig:{
+        	swapTitleInWX: false, // 是否标题内容互换（仅朋友圈，因朋友圈内只显示标题）
+			appId: 'appId', // 公众号的唯一标识
+			timestamp: 'timestamp', // 生成签名的时间戳
+			nonceStr: 'nonceStr', // 生成签名的随机串
+			signature: 'signature' // 签名
+        }
     };
 	var share = new Share('#share',config);
 	</script>
