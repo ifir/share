@@ -21,7 +21,9 @@
 5、在微信内部不允许进行其他APP跳转，会有出现提示点击右上角分享
 6、自定义设置需要分享的APP
 7、无依赖，引用一个js文件即可，无需关心图片和样式
-8、
+8、自定义作为中间桥梁浏览器仅限UC和QQ浏览器,默认UC
+
+Tips:不支持原生分享指的是JS无法调用浏览器分享接口
 ```
 
 ### 如何使用
@@ -45,7 +47,8 @@
 			timestamp: 'timestamp', // 生成签名的时间戳
 			nonceStr: 'nonceStr', // 生成签名的随机串
 			signature: 'signature' // 签名
-        }
+        },
+        bridgeBrowser:'qqbrowser' //默认ucbrowser
     };
     //ShareApp(selector, config)
     //selector为生成分享图标的父容器
