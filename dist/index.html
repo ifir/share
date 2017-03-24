@@ -27,7 +27,7 @@
 	<script src="./share-app.js"></script>
 	<script type="text/javascript">
 	var config = {
-        url:window.location.pathname,// 分享的网页链接
+        url:window.location.host,// 分享的网页链接
         title:'分享标题',// 标题
         desc:'分享描述',// 描述
         img:'https://hbfile.b0.upaiyun.com/img/category_page/2e94335da287cfdfd7990bd88eb8ff37262e322492a5',// 图片
@@ -52,13 +52,13 @@
                 //weixin:''
             //}
         //},
-        //bridgeBrowser:'qqbrowser' //默认ucbrowser
+        bridgeBrowser:'qqbrowser', //默认ucbrowser
         //如果是APP内嵌网页,直接调用本app的分享js接口
         //nativeAppJSApi函数内部还需要分享接口是否支持进行判断,如果成功请return
-        nativeAppJSApi: function () {
-            console.log(1);
-            return;
-        }
+        // nativeAppJSApi: function () {
+        //     console.log(1);
+        //     return;
+        // }
     };
 	var shareApp = new ShareApp('#share',config);
 	</script>

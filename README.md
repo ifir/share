@@ -33,7 +33,7 @@ Tips:不支持原生分享指的是JS无法调用浏览器分享接口
 <script src="youpath/share-app.js"></script>
 <script>
 	var config = {
-        url:window.location.href,// 分享的网页链接
+        url:window.location.host,// 分享的网页链接
         title:'分享标题',// 标题
         desc:'分享描述',// 描述
         img:'http://.......',// 图片
