@@ -1,8 +1,3 @@
-/**
- * ShareApp
- * @param {String} selector    父容器的id,class,tag等
- * @param {Object} config 分享配置
- */
 ;(function(global, factory) {
     if (typeof define === 'function' && define.amd) {
         define(function() {
@@ -31,7 +26,7 @@
                 h = 63 & d,
                 isNaN(c) ? g = h = 64 : isNaN(d) && (h = 64),
                 i = i + this._keyStr.charAt(e) + this._keyStr.charAt(f) + this._keyStr.charAt(g) + this._keyStr.charAt(h);
-            return i
+            return i;
         },
         decode: function(a) {
             var b, c, d, e, f, g, h, i = "",
@@ -47,7 +42,7 @@
                 i += String.fromCharCode(b),
                 64 != g && (i += String.fromCharCode(c)),
                 64 != h && (i += String.fromCharCode(d));
-            return i = base64._utf8_decode(i)
+            return i = base64._utf8_decode(i);
         },
         _utf8_encode: function(a) {
             a = a.replace(/\r\n/g, "\n");
@@ -73,16 +68,18 @@
             return b
         }
     };
-
+    /**
+     * ShareApp
+     * @param {String} selector    父容器的id,class,tag等
+     * @param {Object} config 分享配置
+     */
     function ShareApp(selector, config) {
         var _this = this;
         _this.config = config;
-        _this.container = document.querySelectorAll(selector)[0];
+        _this.container = document.querySelector(selector);
         _this.UA = window.navigator.userAgent;
         _this.init();
-
     }
-
     ShareApp.prototype = {
         constructor: ShareApp,
         //浏览器设备信息
@@ -124,23 +121,18 @@
             qzone: {
                 name: 'QQ空间',
                 icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAP1BMVEVHcEz///////////////////////////////////////////////////////////////////////////////9KjZoYAAAAFHRSTlMAYECgEPAwwH8/4NAgUJCwcM+fr0RbN4IAAAGVSURBVHhe7ZbdkoMgDIUVE2ARf7o97/+s22k7pZmAUJnZq36XmBwPJgGHf+CLQ+zKN8DUJbABXRYi0GdhArosRNy5dhoAzMl8whN3UsADXRaI0WfBA30WGOiyMOKd8XOBIATCGQNdFoghCXSiBAJ/YgoEXJgp+5PjCs1Vh9H9yOjA3gRoVcuzK5KtjHVqu27db/Y0vyLKvtZ35AjOjz+itE74tEPCMBJa5hFKF5EvHdoAiX5XFPkTDRKaUWK7x1oW+YOCJuRZB5lfHoysAo9tsy2idKlGtZZnST7Fpxa9Fgr5aafqU/0qzTI0q62SyHc0HJOajU2mfeCHVoE55vKx1QSC7DTLkFxqAtJp1DPSdJ/yksZs34I6Qw4waXgStHjHjZecKVbKjuvcUIYdYF/GVf+YPGq42k9NDa71URX6SIB3MaH1MkAykb44xnaB8HyZnZvHySLBb5E7N5bBvMVF0Yxb2zgtL/eL0g540tJHng4e2qqAK4TER5GXShvwQZ2WUCmDA9bDTqP1eJz8ZoYKVoX08uUPi2Bapj4cFIsAAAAASUVORK5CYII=',
-                api: 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url={{url}}&title={{title}}&pics={{pic}}&desc={{desc}}',
+                api: 'http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url={{url}}&title={{title}}&pics={{img}}&desc={{desc}}',
                 scheme: '' //isIOS ? 'mqqapi://share/to_fri?file_type=news&src_type=web&version=1&generalpastboard=1&shareType=1&cflag=1&objectlocation=pasteboard&callback_type=scheme&callback_name=QQ41AF4B2A' : 'mqqapi://share/to_qzone?src_type=app&version=1&file_type=news&req_type=1'
             },
             weibo: {
                 name: '新浪微博',
                 icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAPFBMVEVHcEz///////////////////////////////////////////////////////////////////////////+PybD1AAAAE3RSTlMAoGAw0PCAEEDAIHDfsJBQ4I+vnt3bXwAAAkdJREFUeF7tVtuCqyAMLAghAfHG///rqW0xwWjd9nHPzgsWyGQgF3r7v/CHzrhSiieau+8I+rKhn8MXBEXCp88JqDRwn4tIkBAtZM8MXwKJGb7E+FBBb3YEa4jI4GlMHwzpVKMpL5ggrdzqdo4bgz8+RFwKYzjIhEcWwKkEKA2EEy9DGKY1o3hRyGyBvDaUCnP/ZdcPldXWlx1Aslu0ptLGdbQ7+7kooPJRJbjnKPFkP7wDvEPs8vcxcypoexkFhOV1/8vjyOP6eR9hT7AUDZ/a2ZUBFQH7v0Sul/AyoM/sW899k2e2/JgAn+GLTSp2P7R3j4iArXcZa/H1aicNAIbIq6BIn3QcgGxFhsbRNFFggHf1J0rXNujmMNV2jFcdm3jHSY24FN8U8HmzjlylHnYaQ2V3Hc+NAKlVY05belLTtrqTTTHUSVVDr4Wp2qOM6SxOcVLknZzTOUmHzS7rE9QUGVVBH0nwgiA3jSN6kYzPkcM2iZpgUKNpkCphJ4EOm7VreicLgHqcngneKBjFjU4WMZe+q8mjCNo4ZhkD3OKZxYXplE8qCpYJUv1ibypA8dbkBzf4sImJ+mkx8mXan6HnY0KbNT5w0YsplYqw7fLYyE26a41szLH3kXU6ckpt0FMMJ4vRtIl8ac+rLqoX2mE9Zq/tNYPfCjKvHG7AugzquVcMz7yh7mgNWNKEF//cymJDaz0aL9zz4htHNFvE+86IaabC8EO8vUdIU9GQ78U1OqCiMRnLzq+BFjIR+TIRkYGE4fbb8Yd/KxZhLtPWraEAAAAASUVORK5CYII=',
-                api: 'http://service.weibo.com/share/share.php?url={{url}}&title={{title}}&pic={{pic}}'
+                api: 'http://service.weibo.com/share/share.php?url={{url}}&title={{title}}&pic={{img}}'
             },
             yixin: {
                 name: '易信',
                 icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAP1BMVEVHcEz///////////////////////////////////////////////////////////////////////////////9KjZoYAAAAFHRSTlMAMMAgQGCgEPCAcNBQsOCQ37+Pr/HIP5wAAAI0SURBVHhetVfdeuwgCFyNfxhNTJb3f9Zz03aqYvS0X+du10AGGIS8/hjeGLP9zHSz7gr8gcvZ7f+s484tyr3sw7xZxpVWzNXFYxQzzdrNz3g/B6IKzxCe4rC8gnto73gNb79mv2eiSET64PbEz+2z9ThScZ97IAbYdbk2uvLgOvvEgBZLZapIqBVvwFkcaaQKspEU5BfUWpmDl05gP/dwvgAfevu5h02qwLTfTqkSPoDWFHtPAbyORh8qEbVXmuopwKmtqkblQ3Z2oNjwqYEvAlW6oAwuSC0exwujRKC+WML3o4yGaf7weChyA9WpHjHAH3TPQC+82i3SGntly92jkYSKkRFKBQRJd1T9FOUGJCEJeeBAswASMqQhjIpjYQFOdoDX7XDAErTgoMBBE8KcAVjnRQdxFAKhOzsdylq0AwfQgeceh1RlXVX1fBxyUYqQqogKHvHHQy/41qt0S6oHArbNiwYhQIV6GMozBL0BmmIigxJbPYMuKIgNZSQCuMK+MhY2eYrZwRT20E0b6i3zxwxBBPgTWrA7A9kP5gobabmI8b4CAzoN1xg92A6ihnxdM2uHGwLVkjGRCENtsGHk6uxY2OIU4kfFROkWO5ns0MBoFBUrsUjgyW62ZgYn7Ro2PyyKOzcIwneKj7Bv4eEBKG9Kn+VShq7HTcpnXsPuf7eua8kea8kU9HrCpifmhxnaothjBHotwB5Dc/9aQ3JCLjLEuwJzagb0mfwPP70p4fP7T/APapCRU7q26PsAAAAASUVORK5CYII=',
-                api: 'http://open.yixin.im/share?url={{url}}&title={{title}}&pic={{pic}}&desc={{desc}}'
-            },
-            tqq: {
-                name: '腾讯微博',
-                icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAOVBMVEVHcEz///////////////////////////////////////////////////////////////////////99PJZNAAAAEnRSTlMAoLAwwECAEPAg0HDgYFCQv48OkrAuAAAB90lEQVR4Xu2UXZOjIBBFG+RTQJPz/3/sbqKxnZCpcczD1lblPNGl3Kb70sj/xochXG2Y5CzTBUiQgpyiUEu86TjGKL8nYB/b2k8KUXoGrAaN+butzVaAZFuWL9i0lzVotCMbFMxeIi85r3CN97BIT0gA1RnjRgCusuHx9z7ColRtf3oL1LKmzaUCl6gtvC0dQL3FznX7R0ghilIS2u3AvREA42sBC2l4avwIoyxM9xKGBEy3OD2XMEONr041r8tlMczYxdT21H/NvycnGNRGNdA+22igyAsaXL5epIwR8YTuAHUXeV277QgNE5dcXvLczYnWNFXAxEcE83aadDM5phSlt4C8+XUnPWI1QrwDavT0o6R/eVYuWoNs5BLml8MIVru5krcTdfZ0CgMETbjiNwHfm5PStI/9cQG9pDbvQi0h8CA+CfSje9EP4PTyLgQ1SF6S56SXb2T1dttvZCVR5RtiizpKtMdI5eBG27Q6jPzMsPg+9SNlYJIDjCASUzdSHqocYXDlns31D8IkR/HLBCgqeYwLT1MeDaQoB+nLHUbt6REMNFEGw4H9/aMUjQlTC9cK4KIcpywWFjZqk98wQl7fYYBkJvkVGey68n/J8lsKNDmNPqvnqVR5hwxGTqOv4nkKeHmH8K6AA/kIfAQKSd6jePl3fPgDOtEg/yPlfh8AAAAASUVORK5CYII=',
-                api: 'http://share.v.t.qq.com/index.php?c=share&a=index&url={{url}}&title={{title}}&pic={{pic}}'
+                api: 'http://open.yixin.im/share?url={{url}}&title={{title}}&pic={{img}}&desc={{desc}}'
             }
             /*,
             tieba: {
@@ -148,6 +140,26 @@
                 icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAOVBMVEVHcEz///////////////////////////////////////////////////////////////////////99PJZNAAAAEnRSTlMAMPCggL8QwD9/4NCQsHDPYFAr85NjAAABBklEQVR4Xu3V3Y6DIBCG4QFxoP5u5/4vdrM4+2kTaoD+eMJ7QtvUJxHHQF+sFbboabdkhGTrOSDJyoEGWI9sFeAJ+csAjzUJhD2uAY6FK4AG1M9BAxrQawr02nQOdDsg6fw54K4E1lcBeRHgNDA4NJwD97guByBxYJwBXVxXpsn/lQsgthKbSSsFFtFcHcCD/PdTBThB1lQARg4NXArgBnQj+2JgltjIKnSFQIcT546NLAE62Udg0s8Go3xDQxrgVbYsH3eDc18msz4emQH/ywTswwTiJkaTCyyCjdfG+DwoF6BZr0dGv+UCbPV65BYqASjg/UGFk+gMVQLoM0CIGUIGP7yr1i+rL2X5ejXICAAAAABJRU5ErkJggg==',
                 api: 'http://tieba.baidu.com/f/commit/share/openShareApi?url={{url}}&title={{title}}&desc={{desc}}'
             }*/
+            /*,
+            tqq: {
+                name: '腾讯微博',
+                icon: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAOVBMVEVHcEz///////////////////////////////////////////////////////////////////////99PJZNAAAAEnRSTlMAoLAwwECAEPAg0HDgYFCQv48OkrAuAAAB90lEQVR4Xu2UXZOjIBBFG+RTQJPz/3/sbqKxnZCpcczD1lblPNGl3Kb70sj/xochXG2Y5CzTBUiQgpyiUEu86TjGKL8nYB/b2k8KUXoGrAaN+butzVaAZFuWL9i0lzVotCMbFMxeIi85r3CN97BIT0gA1RnjRgCusuHx9z7ColRtf3oL1LKmzaUCl6gtvC0dQL3FznX7R0ghilIS2u3AvREA42sBC2l4avwIoyxM9xKGBEy3OD2XMEONr041r8tlMczYxdT21H/NvycnGNRGNdA+22igyAsaXL5epIwR8YTuAHUXeV277QgNE5dcXvLczYnWNFXAxEcE83aadDM5phSlt4C8+XUnPWI1QrwDavT0o6R/eVYuWoNs5BLml8MIVru5krcTdfZ0CgMETbjiNwHfm5PStI/9cQG9pDbvQi0h8CA+CfSje9EP4PTyLgQ1SF6S56SXb2T1dttvZCVR5RtiizpKtMdI5eBG27Q6jPzMsPg+9SNlYJIDjCASUzdSHqocYXDlns31D8IkR/HLBCgqeYwLT1MeDaQoB+nLHUbt6REMNFEGw4H9/aMUjQlTC9cK4KIcpywWFjZqk98wQl7fYYBkJvkVGey68n/J8lsKNDmNPqvnqVR5hwxGTqOv4nkKeHmH8K6AA/kIfAQKSd6jePl3fPgDOtEg/yPlfh8AAAAASUVORK5CYII=',
+                api: 'http://share.v.t.qq.com/index.php?c=share&a=index&url={{url}}&title={{title}}&pic={{img}}'
+            },*/
+        },
+        //获取设备信息Android & IOS
+        getPlantform: function(name) {
+            var ua = this.UA.toLowerCase();
+            var name = name.toLowerCase();
+            var flag = (ua.indexOf(name) !== -1) ? true : false;
+            return flag;
+        },
+        //获取QQ浏览器和UC浏览器版本
+        getVersion: function(name) {
+            var av = navigator.appVersion.toLowerCase();
+            var arr = av.split(name.toLowerCase())[1].split('.');
+            var version = parseFloat(arr[0] + '.' + arr[1]);
+            return version;
         },
         //初始化
         init: function() {
@@ -191,21 +203,17 @@
         },
         //初始化UrlAPI
         initUrlAPI: function() {
-            this.urlAPI.qzone.scheme = this.browsersInfo.isIOS ? 'mqqapi://share/to_fri?file_type=news&src_type=web&version=1&generalpastboard=1&shareType=1&cflag=1&objectlocation=pasteboard&callback_type=scheme&callback_name=QQ41AF4B2A' : 'mqqapi://share/to_qzone?src_type=app&version=1&file_type=news&req_type=1';
-        },
-        //获取设备信息Android & IOS
-        getPlantform: function(name) {
-            var ua = this.UA.toLowerCase();
-            var name = name.toLowerCase();
-            var flag = (ua.indexOf(name) !== -1) ? true : false;
-            return flag;
-        },
-        //获取QQ浏览器和UC浏览器版本
-        getVersion: function(name) {
-            var av = navigator.appVersion.toLowerCase();
-            var arr = av.split(name.toLowerCase())[1].split('.');
-            var version = parseFloat(arr[0] + '.' + arr[1]);
-            return version;
+            var _this = this;
+            var urlAPI = _this.urlAPI;
+            urlAPI.qzone.scheme = _this.browsersInfo.isIOS ? 'mqqapi://share/to_fri?file_type=news&src_type=web&version=1&generalpastboard=1&shareType=1&cflag=1&objectlocation=pasteboard&callback_type=scheme&callback_name=QQ41AF4B2A' : 'mqqapi://share/to_qzone?src_type=app&version=1&file_type=news&req_type=1';
+            var defaultIcons = (typeof defaultIcons === undefined && defaultIcons) || true;
+            if (defaultIcons) {
+                return;
+            }
+            var iconsObj = _this.config.setIcons.icons;
+            for (var k in iconsObj) {
+                urlAPI[k].icon = iconsObj[k];
+            }
         },
         //分享到
         shareTo: function(appName) {
@@ -213,6 +221,10 @@
             var browsersInfo = _this.browsersInfo;
             var config = _this.config;
             var nativeShareToAppName, nativeShareConfig, api = _this.urlAPI[appName].api;
+            //如果有自家的App给浏览器暴露分享的接口,则优先调用
+            if (_this.nativeAppJSApi && (typeof _this.nativeAppJSApi === 'function')) {
+                _this.nativeAppJSApi();
+            }
             //浏览器是否支持原生分享(QQ浏览器&UC)
             if (browsersInfo.supportNativeShare) {
                 //UC
@@ -266,8 +278,8 @@
                     }
                     return;
                 }
-                //分享为贴吧，腾讯微博，易信
-                if (appName === 'tqq' || appName === 'tieba' || appName === 'yixin') {
+                //分享为易信
+                if (appName === 'yixin') {
                     (function() {
                         for (var k in config) {
                             api = api.replace(new RegExp('\\{\\{' + k + '\\}\\}', 'g'), encodeURIComponent(config[k]));
@@ -295,7 +307,6 @@
                 var browserURL = _this.appendUrlParam(window.location.href, {
                     bridge: appName
                 });
-                //alert(browserURL);
                 _this.config.bridgeBrowser === 'qqbrowser' ? _this.openUrlScheme('mttbrowser://url=' + browserURL) : _this.openUrlScheme('ucbrowser://' + browserURL);
             }
             //在微信里点微信分享，弹出右上角提示
@@ -309,6 +320,7 @@
                     for (var k in config) {
                         api = api.replace(new RegExp('\\{\\{' + k + '\\}\\}', 'g'), encodeURIComponent(config[k]));
                     }
+                    console.log(api);
                     window.open(api, '_blank');
                 })();
             }
@@ -316,7 +328,7 @@
         //初始化DOM
         initRender: function() {
             var _this = this;
-            var apps = _this.config.apps;
+            var apps = _this.config.apps || ['weixin', 'weixintimeline', 'qq', 'weibo'];
             var list = [];
             for (var i = 0, len = apps.length; i < len; i++) {
                 list.push(
@@ -352,26 +364,29 @@
         },
         //初始化样式
         initStyle: function() {
-            var styles = document.createElement('style');
-            styles.type = 'text/css';
-            var stylesArr = [
-                '.share-list{width: 100%;overflow: hidden;font-size: 0;}\n',
-                '.share-list .share-item{display: inline-block;width: 25%;font-size: 14px;margin-bottom: 16px;}\n',
-                '.share-list .weixin{background-color: #49b233;}\n',
-                '.share-list .weixintimeline{background-color: #1cb526;}\n',
-                '.share-list .qq{background-color: #4081e1;}\n',
-                '.share-list .qzone{background-color: #fdbe3d;}\n',
-                '.share-list .weibo{background-color: #f04e59;}\n',
-                '.share-list .yixin{background-color: #23cfaf;}\n',
-                '.share-list .tqq{background-color: #97cbe1;}\n',
-                '.share-list .tieba{background-color: #5b95f0;}\n',
-                '.share-list .icon-wrap{width: 50px;height: 50px;text-align: center;vertical-align: middle;margin: 0 auto;border-radius: 50%;line-height: 50px;}\n',
-                '.share-item img{width: 36px;vertical-align: middle;margin-top: -2px;}\n',
-                '.weixinshare-mask{position:fixed;top:0;left:0;z-index:9999;width:100%;height:100%;background:rgba(0,0,0,.85);}\n',
-                '.weixinshare-tip{display:block;width:117px;height:114px;position:absolute;top:10px;right:20px;}'
-            ];
-            styles.innerHTML = stylesArr.join('');
-            document.getElementsByTagName('head')[0].appendChild(styles);
+            var defaultStyles = (this.config.defaultStyles === undefined) && true;
+            if (typeof defaultStyles === 'boolean' && defaultStyles) {
+                var styles = document.createElement('style');
+                styles.type = 'text/css';
+                var stylesArr = [
+                    '.share-list{width:100%;overflow:hidden;font-size:0;}\n',
+                    '.share-list .share-item{display:inline-block;width:33.333333%;font-size:14px;margin-bottom:16px;}\n',
+                    '.share-list .weixin{background-color:#49b233;}\n',
+                    '.share-list .weixintimeline{background-color:#1cb526;}\n',
+                    '.share-list .qq{background-color:#4081e1;}\n',
+                    '.share-list .qzone{background-color:#fdbe3d;}\n',
+                    '.share-list .weibo{background-color:#f04e59;}\n',
+                    '.share-list .yixin{background-color:#23cfaf;}\n',
+                    '.share-list .tqq{background-color:#97cbe1;}\n',
+                    '.share-list .tieba{background-color:#5b95f0;}\n',
+                    '.share-list .icon-wrap{width:50px;height:50px;text-align:center;vertical-align:middle;margin:0 auto;border-radius:50%;line-height:50px;}\n',
+                    '.share-item img{width:36px;vertical-align:middle;margin-top:-2px;}\n',
+                    '.weixinshare-mask{position:fixed;top:0;left:0;z-index:9999;width:100%;height:100%;background:rgba(0,0,0,.85);}\n',
+                    '.weixinshare-tip{display:block;width:117px;height:114px;position:absolute;top:10px;right:20px;}'
+                ];
+                styles.innerHTML = stylesArr.join('');
+                document.getElementsByTagName('head')[0].appendChild(styles);
+            }
         },
         //加载script
         loadScript: function(url, cb) {
@@ -452,11 +467,11 @@
                     url: config.url, // 分享链接
                     // 微信权限验证配置信息，若不在微信传播，可忽略
                     WXconfig: {
-                        swapTitleInWX: config.WXconfig.swapTitleInWX, // 是否标题内容互换（仅朋友圈，因朋友圈内只显示标题）
-                        appId: config.WXconfig.appId, // 公众号的唯一标识
-                        timestamp: config.WXconfig.timestamp, //生成签名的时间戳
-                        nonceStr: config.WXconfig.nonceStr, //生成签名的随机串
-                        signature: config.WXconfig.signature //签名
+                        swapTitleInWX: config.WXconfig.swapTitleInWX || '', // 是否标题内容互换（仅朋友圈，因朋友圈内只显示标题）
+                        appId: config.WXconfig.appId || '', // 公众号的唯一标识
+                        timestamp: config.WXconfig.timestamp || '', //生成签名的时间戳
+                        nonceStr: config.WXconfig.nonceStr || '', //生成签名的随机串
+                        signature: config.WXconfig.signature || '' //签名
                     }
                 });
             });

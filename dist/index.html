@@ -33,7 +33,7 @@
         img:'https://hbfile.b0.upaiyun.com/img/category_page/2e94335da287cfdfd7990bd88eb8ff37262e322492a5',// 图片
         img_title:'图片标题',// 图片标题
         from:'振霖', // 来源
-        apps:['weixin', 'weixintimeline', 'qq', 'qzone', 'weibo', 'yixin', 'tqq'],
+        apps:['weixin', 'weixintimeline', 'qq', 'qzone', 'weibo', 'yixin'],
         //微信config
         WXconfig:{
         	swapTitleInWX: false, // 是否标题内容互换（仅朋友圈，因朋友圈内只显示标题）
@@ -42,7 +42,23 @@
 			nonceStr: 'nonceStr', // 生成签名的随机串
 			signature: 'signature' // 签名
         },
+        //是否采用默认样式，默认true
+        //defaultStyles: false,
+        //是否采用自己的图标，默认不采用，不需要配置setIcons
+        //defaultIcons设置false，进行icon的修改
+        //setIcons: {
+            //defaultIcons:false,
+            //icons:{
+                //weixin:''
+            //}
+        //},
         //bridgeBrowser:'qqbrowser' //默认ucbrowser
+        //如果是APP内嵌网页,直接调用本app的分享js接口
+        //nativeAppJSApi函数内部还需要分享接口是否支持进行判断,如果成功请return
+        nativeAppJSApi: function () {
+            console.log(1);
+            return;
+        }
     };
 	var shareApp = new ShareApp('#share',config);
 	</script>
