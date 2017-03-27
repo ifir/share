@@ -5,6 +5,7 @@ var gulp = require('gulp'),
 	clean = require('gulp-clean'),
 	rename = require('gulp-rename'),
 	runSequence = require('run-sequence'),
+	connect = require('gulp-connect'),
 	browserSync = require('browser-sync').create(),
 	reload = browserSync.reload;
 
@@ -16,6 +17,14 @@ gulp.task('dev', function(callback) {
 	runSequence(
 		'clean',
 		'browser-sync',
+		callback
+	)
+});
+gulp.task('dev1', function(callback) {
+	runSequence(
+		'clean',
+		['js', 'html'],
+		'connectDist',
 		callback
 	)
 });
@@ -63,6 +72,14 @@ gulp.task('min:js', function(){
 			    extname: ".js"
 		}))
 		.pipe(gulp.dest('./dist'))
+});
+gulp.task('connectDist', function () {
+  connect.server({
+    //name: 'Dist App',
+    root: 'dist',
+    port: 6060
+    //livereload: true
+  });
 });
 //browser-sync
 gulp.task('browser-sync', ['js', 'html'], function() {
